@@ -30,5 +30,5 @@ user: Model = api.model('Пользователь', {
     'password': fields.String(required=True, max_length=200, example='12345678'),
     'name': fields.String(required=True, max_length=200, example='Иван'),
     'surname': fields.String(required=True, max_length=200, example='Иванов'),
-    'favourite_genre': fields.Nested(genre)
+    'genre': fields.Nested(genre)
 })

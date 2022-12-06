@@ -1,12 +1,12 @@
 from typing import Optional, List
 
-from project.dao.base import BaseDAO
+from project.dao import MoviesDAO
 from project.exceptions import ItemNotFound
 from project.models.models import Movie
 
 
 class MoviesService:
-    def __init__(self, dao: BaseDAO) -> None:
+    def __init__(self, dao: MoviesDAO) -> None:
         self.dao = dao
 
     def get_item(self, pk: int) -> Movie:
@@ -14,5 +14,6 @@ class MoviesService:
             return movie
         raise ItemNotFound(f'Movie with pk={pk} not exists.')
 
-    def get_all(self, page: Optional[int] = None) -> List[Movie]:
-        return self.dao.get_all(page=page)
+    def get_all(self, filter=None, page: Optional[int] = None) -> List[Movie]:
+        return self.dao.get_all_sorted(page=page, filter=filter)
+    
