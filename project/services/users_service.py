@@ -2,7 +2,7 @@ from typing import Optional, List
 from project.dao import UsersDAO
 from project.exceptions import ItemNotFound
 from project.models.models import User
-from project.tools.security import generate_tokens, approve_refresh_token
+from project.tools.security import generate_tokens, approve_refresh_token, get_data_from_token
 
 
 class UsersService:
@@ -12,7 +12,7 @@ class UsersService:
     def get_item(self, pk: int) -> User:
         if user := self.dao.get_by_id(pk):
             return user
-        raise ItemNotFound(f'Director with pk={pk} not exists.')
+        raise ItemNotFound(f'user with pk={pk} not exists.')
 
     def get_all(self, page: Optional[int] = None) -> List[User]:
         return self.dao.get_all(page=page)
@@ -29,3 +29,14 @@ class UsersService:
 
     def update(self, refresh_token):
         return approve_refresh_token(refresh_token)
+
+    def get_user_by_token(self, refresh_token):
+        data = get_data_from_token(refresh_token)
+        if data:
+            return self.get_user_by_login(data.get('email'))
+
+    def update_user(self, data:dict, refresh_token):
+        user = self.get_user_by_token(refresh_token)
+        if user:
+            self.dao.update(user.email, data=data)
+            return self.get_user_by_token(refresh_token)

@@ -7,7 +7,6 @@ import jwt
 from flask import current_app
 
 
-
 def __generate_password_digest(password: str) -> bytes:
     return hashlib.pbkdf2_hmac(
         hash_name="sha256",
@@ -26,10 +25,7 @@ def compare_password_hash(password_hash, other_password):
         return True
 
 
-
 def generate_tokens(email, password, password_hash=None, is_refresh=False):
-
-
     if email is None:
         return None
 
@@ -39,7 +35,7 @@ def generate_tokens(email, password, password_hash=None, is_refresh=False):
 
     data = {
         "email": email,
-        "password": password
+        "password": password,
     }
 
     min30 = datetime.datetime.utcnow() + datetime.timedelta(minutes=current_app.config['TOKEN_EXPIRE_MINUTES'])
@@ -53,7 +49,17 @@ def generate_tokens(email, password, password_hash=None, is_refresh=False):
 
 
 def approve_refresh_token(refresh_token):
-    data = jwt.decode(jwt=refresh_token, key=current_app.config['SECRET_KEY'], algorithm=current_app.config['ALGORITHM'])
+    data = jwt.decode(jwt=refresh_token, key=current_app.config['SECRET_KEY'],
+                      algorithm=current_app.config['ALGORITHM'])
     email = data.get("email")
     password = data.get("password")
     return generate_tokens(email, password, is_refresh=True)
+
+
+def get_data_from_token(refresh_token):
+    try:
+        data = jwt.decode(jwt=refresh_token, key=current_app.config['SECRET_KEY'],
+                          algorithm=current_app.config['ALGORITHM'])
+        return data
+    except Exception:
+        return None

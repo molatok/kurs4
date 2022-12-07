@@ -48,3 +48,11 @@ class UsersDAO(BaseDAO[User]):
             return stmt
         except Exception as e:
             print(e)
+
+    def update(self, login, data):
+        try:
+            self._db_session.query(self.__model__).filter(self.__model__.email == login).update(data)
+            self._db_session.commit()
+        except Exception as e:
+            print(e)
+            self._db_session.rollback()
