@@ -4,7 +4,7 @@ Content-Type: application/json
 
 {
   "email":"test@mail2.ru",
-    "password":"1234"
+  "password":"1234"
 }
 
 ###
@@ -15,5 +15,16 @@ Content-Type: application/json
 
 {
   "email":"test@mail2.ru",
-    "password":"1234"
+  "password":"1234"
+}
+
+###
+
+PUT http://localhost:8080/auth/login/
+Accept: application/json
+Content-Type: application/json
+
+{
+  "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3RAbWFpbDIucnUiLCJwYXNzd29yZCI6Ik4remtIeXgxcW0raWlGeHRjZ3F0MFdyVjJzR3o3UHZxaTUrRzlheTl1d3M9IiwiZXhwIjoxNjcwNDE4MDAwfQ.BlMRjPo10Y1PqNkjEqOX4cCMJ7GW-5tob7mhw6bUWZA",
+  "refresh_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3RAbWFpbDIucnUiLCJwYXNzd29yZCI6Ik4remtIeXgxcW0raWlGeHRjZ3F0MFdyVjJzR3o3UHZxaTUrRzlheTl1d3M9IiwiZXhwIjoxNjcwNDI0OTAwfQ.C-p69jb9PwTfFs90a_NkNwIRwC268yVdwy21mi1pfLY"
 }
