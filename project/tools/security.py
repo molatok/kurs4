@@ -28,12 +28,10 @@ def compare_password_hash(password_hash, other_password):
 
 
 class AuthsService:
-    def __init__(self, users_service):
-        self.users_service = users_service
         
-    
-    def generate_tokens(self, email, password, is_refresh=False):
-        user = self.users_service.get_user_by_login(email)
+    @staticmethod
+    def generate_tokens(user, password, is_refresh=False):
+
         
         if user is None:
             raise abort(404)
@@ -43,8 +41,8 @@ class AuthsService:
                 abort(400)
                 
         data = {
-            "email": email,
-            "password": password
+            "email": user.email,
+            "password": user.password
         }
 
         min30 = datetime.datetime.utcnow() + datetime.timedelta(minutes=current_app.config['TOKEN_EXPIRE_MINUTES'])

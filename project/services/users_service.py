@@ -24,7 +24,5 @@ class UsersService:
         return self.dao.get_user_by_login(login)
         
     def chek(self, login, password):
-        result = self.dao.get_user_by_login(login)
-        if len(result):
-            AuthsService().generate_tokens(login, password)
+        return AuthsService().generate_tokens(user=self.get_user_by_login(login), password=password)
             
