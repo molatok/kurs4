@@ -2,7 +2,6 @@ import base64
 import calendar
 import datetime
 import hashlib
-from os import abort
 import jwt
 from flask import current_app
 
@@ -50,7 +49,7 @@ def generate_tokens(email, password, password_hash=None, is_refresh=False):
 
 def approve_refresh_token(refresh_token):
     data = jwt.decode(jwt=refresh_token, key=current_app.config['SECRET_KEY'],
-                      algorithm=current_app.config['ALGORITHM'])
+                      algorithms=current_app.config['ALGORITHM'])
     email = data.get("email")
     password = data.get("password")
     return generate_tokens(email, password, is_refresh=True)
@@ -59,7 +58,7 @@ def approve_refresh_token(refresh_token):
 def get_data_from_token(refresh_token):
     try:
         data = jwt.decode(jwt=refresh_token, key=current_app.config['SECRET_KEY'],
-                          algorithm=current_app.config['ALGORITHM'])
+                          algorithms=current_app.config['ALGORITHM'])
         return data
     except Exception:
         return None
