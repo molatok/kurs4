@@ -1,3 +1,5 @@
+from requests.auth import HTTPBasicAuth
+
 from project.config import config
 from project.models.models import Genre, Movie, User, Director
 from project.server import create_app, db
@@ -15,9 +17,11 @@ def shell():
         "Director": Director
     }
 
+
 if __name__ == '__main__':
     app.run(
-        host = "localhost",
+        host="localhost",
         port=8080,
         debug=True
     )
+

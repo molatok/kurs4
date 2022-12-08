@@ -27,20 +27,20 @@ def compare_password_hash(password_hash, other_password):
 def generate_tokens(email, password, password_hash=None, is_refresh=False):
     if email is None:
         return None
-
+    
     if not is_refresh:
         if not compare_password_hash(other_password=password, password_hash=password_hash):
             return None
-
+    
     data = {
         "email": email,
         "password": password,
     }
-
+    
     min30 = datetime.datetime.utcnow() + datetime.timedelta(minutes=current_app.config['TOKEN_EXPIRE_MINUTES'])
     data["exp"] = calendar.timegm(min30.timetuple())
     access_token = jwt.encode(data, key=current_app.config['SECRET_KEY'], algorithm=current_app.config['ALGORITHM'])
-
+    
     days130 = datetime.datetime.utcnow() + datetime.timedelta(minutes=current_app.config['TOKEN_EXPIRE_DAYS'])
     data["exp"] = calendar.timegm(days130.timetuple())
     refresh_token = jwt.encode(data, key=current_app.config['SECRET_KEY'], algorithm=current_app.config['ALGORITHM'])
@@ -62,3 +62,9 @@ def get_data_from_token(refresh_token):
         return data
     except Exception:
         return None
+
+
+def user_token_by_email(refresh_token):
+    data = jwt.decode(jwt=refresh_token, key=current_app.config['SECRET_KEY'],
+                      algorithms=current_app.config['ALGORITHM'])
+    return data.get("email")
